@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = "nibiru-lxl-final-supabase-v4";
+﻿const CACHE_NAME = "nibiru-mobile-header-v10";
 const ASSETS = [
   "./",
   "./index.html",
@@ -23,5 +23,8 @@ self.addEventListener("activate", event => {
 self.addEventListener("fetch", event => {
   event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request)));
 });
+
+
+
 
 
