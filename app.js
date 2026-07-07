@@ -1,4 +1,4 @@
-/* Liga Nibiru FC - versão revisada para Google AI Studio. Não remover CSS/estrutura principal sem necessidade. */
+﻿/* Liga Nibiru FC - versão revisada para Google AI Studio. Não remover CSS/estrutura principal sem necessidade. */
 
 const LS = {
   settings: "nibiru_lxl_settings_v11_revisado",
@@ -9,12 +9,12 @@ const LS = {
 };
 
 const DEFAULT_ASSETS = {
-  logoDark: "./assets/logo-nibiru-red.png",
-  logoLight: "./assets/logo-nibiru-blue.png",
-  homeDark: "./assets/home-art-dark.webp?v=4?v=4",
-  homeLight: "./assets/home-art-light.webp",
-  bgDark: "./assets/background-dark.webp",
-  bgLight: "./assets/background-light.webp"
+  logoDark: "/assets/logo-nibiru-red.png",
+  logoLight: "/assets/logo-nibiru-blue.png",
+  homeDark: "/assets/home-art-dark.webp?v=4?v=4",
+  homeLight: "/assets/home-art-light.webp",
+  bgDark: "/assets/background-dark.webp",
+  bgLight: "/assets/background-light.webp"
 };
 
 const defaultSettings = {
@@ -999,7 +999,7 @@ function setupEvents(){
 
 function registerSW(){
   if ("serviceWorker" in navigator && location.protocol !== "file:") {
-    window.addEventListener("load", ()=>navigator.serviceWorker.register("./service-worker.js").catch(()=>{}));
+    window.addEventListener("load", ()=>navigator.serviceWorker.register("/service-worker.js").catch(()=>{}));
   }
 }
 
@@ -1011,3 +1011,5 @@ async function start(){
   navigate(state.page);
 }
 start();
+
+
