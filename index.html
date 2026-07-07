@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Liga Nibiru FC | LXL Manager</title>
+  <meta name="description" content="App da Liga Nibiru FC / LXL Manager">
+  <meta name="theme-color" content="#0b0b0f" id="themeColorMeta">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Nibiru FC">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body class="theme-dark">
+  <div class="app" id="app">
+    <header class="topbar">
+      <div class="brand" data-page-go="home" title="Início">
+        <img id="mainLogo" class="logo-img" decoding="async" src="./assets/logo-nibiru-red.png" alt="Logo Nibiru FC">
+        <div>
+          <strong>LIGA NIBIRU FC</strong>
+          <span>LXL MANAGER</span>
+        </div>
+      </div>
+
+      <nav class="nav" id="mainNav" aria-label="Navegação principal"></nav>
+
+      <div class="top-actions">
+        <button class="tiny-btn install-btn" id="installBtn" type="button">⬇ Instalar</button>
+        <button class="theme-toggle" id="themeToggle" type="button" title="Trocar tema">☀️</button>
+        <button class="access-btn member" id="accessBtn" type="button">Membro</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <section class="page active" id="page-home">
+        <div class="hero">
+          <div class="hero-copy">
+            <div class="eyebrow">LXL MANAGER</div>
+            <h1>LIGA NIBIRU FC</h1>
+            <p>Controle jogadores, partidas, ranking, metas, aderência de gols e alertas de 0/3 em uma plataforma limpa, gamer e profissional.</p>
+            <div class="hero-actions">
+              <button class="btn primary" data-page-go="dashboard">Acessar Dashboard</button>
+              <button class="btn secondary" data-page-go="players">Gerenciar Jogadores</button>
+              <button class="btn secondary install-home-btn" id="installHomeBtn" type="button">Instalar App</button>
+            </div>
+            <div class="shortcut-grid">
+              <button class="shortcut" data-page-go="dashboard"><span>▥</span><b>Acessar Dashboard</b><small>Visão geral da liga e indicadores</small></button>
+              <button class="shortcut" data-page-go="players"><span>●●●</span><b>Jogadores</b><small>Gerenciar elenco e status</small></button>
+              <button class="shortcut" data-page-go="matches"><span>⚽</span><b>Partidas LXL</b><small>Registrar confrontos e jogos</small></button>
+              <button class="shortcut" data-page-go="ranking"><span>🏆</span><b>Ranking</b><small>Ver classificação e destaques</small></button>
+              <button class="shortcut" data-page-go="reports"><span>▤</span><b>Relatórios</b><small>Análises e exportações</small></button>
+            </div>
+          </div>
+          <div class="hero-art-wrap">
+            <div class="hero-art-frame" id="heroArtFrame">
+              <img id="homeArtImg" class="hero-art-img" loading="eager" decoding="async" fetchpriority="high" src="./assets/home-art-dark.webp?v=4" alt="Arte principal Liga Nibiru FC">
+            </div>
+          </div>
+        </div>
+        <div class="benefits">
+          <div><span>🛡️</span><b>Gestão completa</b><small>Controle total da sua liga</small></div>
+          <div><span>▣</span><b>Dados confiáveis</b><small>Estatísticas em tempo real</small></div>
+          <div><span>◎</span><b>Estratégia inteligente</b><small>Decisões baseadas em dados</small></div>
+          <div><span>▰</span><b>Competição de verdade</b><small>Eleve o nível da sua liga</small></div>
+        </div>
+      </section>
+
+      <section class="page" id="page-history">
+        <div class="page-title">
+          <span class="eyebrow">IDENTIDADE</span>
+          <h2>História e objetivos</h2>
+          <p>A Nibiru nasceu para ser mais do que uma lista de jogadores: é uma comunidade com ambição competitiva.</p>
+        </div>
+        <div class="story-grid">
+          <article class="panel story-card">
+            <h3>Como começou</h3>
+            <p>A Liga Nibiru FC nasceu de forma simples, mas com uma ideia grande: criar um espaço organizado, competitivo e unido para jogadores de FC Mobile.</p>
+            <p>O projeto começou com Wanderson, que estruturou a liga para organizar suas contas, testar formatos e fortalecer a comunidade. Com o tempo, a ideia ganhou forma, novos jogadores chegaram e a Nibiru passou a ter identidade própria.</p>
+          </article>
+          <article class="panel story-card">
+            <h3>O objetivo</h3>
+            <p>O objetivo é evoluir como clã, fortalecer os membros e construir uma comunidade competitiva, organizada e respeitada.</p>
+            <p>A ideia não é apenas disputar partidas, mas acompanhar desempenho, valorizar quem participa, melhorar os resultados e criar um ambiente onde todos tenham motivo para evoluir juntos.</p>
+          </article>
+          <article class="panel story-card full">
+            <h3>Visão de futuro</h3>
+            <p>A Nibiru FC quer se tornar uma referência: organização, estratégia, união e compromisso. Cada jogador faz parte dessa construção, seja atacando, ajudando, participando das decisões ou fortalecendo o ambiente da liga.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="page" id="page-dashboard">
+        <div class="page-title">
+          <span class="eyebrow">PAINEL</span>
+          <h2>Dashboard</h2>
+          <p>Visão geral da temporada e principais indicadores.</p>
+        </div>
+        <div class="kpi-grid" id="kpiGrid"></div>
+      </section>
+
+      <section class="page restricted" id="page-players">
+        <div class="page-title">
+          <span class="eyebrow">ELENCO</span>
+          <h2>Jogadores</h2>
+          <p>Cadastro, GER, média geral, sequência e status.</p>
+        </div>
+        <div class="panel admin-panel" id="playerFormPanel">
+          <h3>Cadastrar / editar jogador</h3>
+          <form id="playerForm" class="grid-form">
+            <input type="hidden" id="playerId">
+            <label>Jogador<input id="playerName" required placeholder="Nome do jogador"></label>
+            <label>GER<input id="playerGer" type="number" min="0" step="1" required></label>
+            <label>Média<input id="playerMedia" type="number" min="0" step="0.01" required></label>
+            <label>Jogos<input id="playerGames" type="number" min="0" step="1" required></label>
+            <label>Sequência<input id="playerStreak" type="number" min="0" step="1"></label>
+            <label>Alertas 0/3<input id="playerZero" type="number" min="0" step="1"></label>
+            <label>Status<select id="playerStatus"><option value="Ativo">Ativo</option><option value="Inativo">Inativo</option></select></label>
+            <label class="wide">Observação<input id="playerNote" placeholder="Ex: baixa amostra, saiu da liga..."></label>
+            <div class="form-actions wide">
+              <button class="btn primary" type="submit">Salvar jogador</button>
+              <button class="btn ghost" type="button" id="clearPlayerForm">Limpar</button>
+            </div>
+          </form>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Elenco</h3>
+            <input class="search" id="playerSearch" placeholder="Buscar jogador">
+          </div>
+          <div class="table-wrap">
+            <table class="data-table" id="playersTable"></table>
+          </div>
+          <div class="mobile-list" id="playersMobileList"></div>
+        </div>
+      </section>
+
+      <section class="page restricted" id="page-matches">
+        <div class="page-title">
+          <span class="eyebrow">PARTIDAS</span>
+          <h2>Partidas LXL</h2>
+          <p>Registre confrontos e acompanhe histórico.</p>
+        </div>
+        <div class="panel admin-panel">
+          <h3>Registrar partida</h3>
+          <form id="matchForm" class="grid-form">
+            <label>Data<input id="matchDate" type="date" required></label>
+            <label>Adversário<input id="matchOpponent" placeholder="Nome do adversário" required></label>
+            <label>Gols Nibiru<input id="matchGoalsFor" type="number" min="0" required></label>
+            <label>Gols adversário<input id="matchGoalsAgainst" type="number" min="0" required></label>
+            <div class="form-actions wide">
+              <button class="btn primary" type="submit">Salvar partida</button>
+            </div>
+          </form>
+        </div>
+        <div class="panel">
+          <h3>Histórico</h3>
+          <div class="table-wrap desktop-table-wrap">
+            <table class="data-table desktop-table" id="matchesTable"></table>
+          </div>
+          <div class="mobile-list" id="matchesMobileList"></div>
+        </div>
+      </section>
+
+      <section class="page" id="page-ranking">
+        <div class="page-title">
+          <span class="eyebrow">CLASSIFICAÇÃO</span>
+          <h2>Ranking</h2>
+          <p>Índice calculado por média geral como peso principal e GER como fator complementar.</p>
+        </div>
+        <div class="panel">
+          <div class="table-wrap desktop-table-wrap">
+            <table class="data-table desktop-table" id="rankingTable"></table>
+          </div>
+          <div class="mobile-list" id="rankingMobileList"></div>
+        </div>
+      </section>
+
+      <section class="page restricted" id="page-reports">
+        <div class="page-title">
+          <span class="eyebrow">ANÁLISE</span>
+          <h2>Relatórios</h2>
+          <p>Resumo de destaques, riscos e próximos passos.</p>
+        </div>
+        <div class="report-grid" id="reportGrid"></div>
+      </section>
+
+      <section class="page restricted" id="page-settings">
+        <div class="page-title">
+          <span class="eyebrow">AJUSTES</span>
+          <h2>Configurações</h2>
+          <p>Identidade visual do app, imagens por tema e ajustes de aparência.</p>
+        </div>
+
+        <div class="settings-grid">
+          <div class="panel theme-panel">
+            <h3>Tema Visual</h3>
+            <p>Qualquer usuário pode alternar o tema localmente.</p>
+            <div class="segmented">
+              <button type="button" data-theme-choice="dark">Escuro Nibiru</button>
+              <button type="button" data-theme-choice="light">Claro Nibiru</button>
+            </div>
+          </div>
+
+          <div class="panel visual-only">
+            <h3>Logo por Tema</h3>
+            <p>A logo fica sem fundo, borda ou moldura.</p>
+            <div class="upload-block">
+              <h4>Logo do Tema Escuro</h4>
+              <img class="preview-logo" id="previewLogoDark" alt="Prévia logo escura">
+              <div class="inline-actions">
+                <button class="btn secondary" data-select-image="logoDark" type="button">Escolher logo vermelha</button>
+                <button class="btn primary" data-save-image="logoDark" type="button">Salvar logo vermelha</button>
+                <button class="btn ghost" data-restore-image="logoDark" type="button">Restaurar padrão</button>
+              </div>
+            </div>
+            <div class="upload-block">
+              <h4>Logo do Tema Claro</h4>
+              <img class="preview-logo" id="previewLogoLight" alt="Prévia logo clara">
+              <div class="inline-actions">
+                <button class="btn secondary" data-select-image="logoLight" type="button">Escolher logo azul</button>
+                <button class="btn primary" data-save-image="logoLight" type="button">Salvar logo azul</button>
+                <button class="btn ghost" data-restore-image="logoLight" type="button">Restaurar padrão</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel visual-only">
+            <h3>Arte Principal por Tema</h3>
+            <div class="upload-block">
+              <h4>Arte do Tema Escuro</h4>
+              <img class="preview-art" id="previewHomeDark" alt="Prévia arte escura">
+              <div class="inline-actions">
+                <button class="btn secondary" data-select-image="homeDark" type="button">Escolher arte escura</button>
+                <button class="btn primary" data-save-image="homeDark" type="button">Salvar arte escura</button>
+                <button class="btn ghost" data-restore-image="homeDark" type="button">Restaurar padrão</button>
+              </div>
+            </div>
+            <div class="upload-block">
+              <h4>Arte do Tema Claro</h4>
+              <img class="preview-art" id="previewHomeLight" alt="Prévia arte clara">
+              <div class="inline-actions">
+                <button class="btn secondary" data-select-image="homeLight" type="button">Escolher arte clara</button>
+                <button class="btn primary" data-save-image="homeLight" type="button">Salvar arte clara</button>
+                <button class="btn ghost" data-restore-image="homeLight" type="button">Restaurar padrão</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel visual-only">
+            <h3>Fundo por Tema</h3>
+            <div class="inline-actions">
+              <button class="btn secondary" data-select-image="bgDark" type="button">Escolher fundo escuro</button>
+              <button class="btn primary" data-save-image="bgDark" type="button">Salvar fundo escuro</button>
+              <button class="btn ghost" data-restore-image="bgDark" type="button">Restaurar fundo escuro</button>
+            </div>
+            <div class="inline-actions">
+              <button class="btn secondary" data-select-image="bgLight" type="button">Escolher fundo claro</button>
+              <button class="btn primary" data-save-image="bgLight" type="button">Salvar fundo claro</button>
+              <button class="btn ghost" data-restore-image="bgLight" type="button">Restaurar fundo claro</button>
+            </div>
+          </div>
+
+          <div class="panel visual-only">
+            <h3>Moldura da Arte Principal</h3>
+            <div class="settings-controls">
+              <label><input type="checkbox" id="frameEnabled"> Ativar moldura</label>
+              <label>Cor da moldura<input type="color" id="frameColor"></label>
+              <label>Espessura <span id="frameSizeValue"></span><input type="range" min="0" max="16" id="frameSize"></label>
+              <label>Arredondamento <span id="frameRadiusValue"></span><input type="range" min="0" max="40" id="frameRadius"></label>
+              <label>Tipo da linha<select id="frameStyle"><option value="solid">Sólida</option><option value="dashed">Tracejada</option><option value="dotted">Pontilhada</option><option value="none">Sem linha</option></select></label>
+              <label><input type="checkbox" id="frameShadow"> Brilho/Neon</label>
+              <button class="btn secondary" id="restoreFrameDefault" type="button">Restaurar moldura padrão</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="page-tournaments">
+        <div class="page-title">
+          <span class="eyebrow">EM BREVE</span>
+          <h2>Torneios</h2>
+          <p>Área reservada para torneios internos e desafios especiais da comunidade.</p>
+        </div>
+        <div class="panel empty-state">
+          <h3>Torneios em construção</h3>
+          <p>Quando a função for liberada, os administradores poderão cadastrar competições, fases, confrontos e resultados.</p>
+        </div>
+      </section>
+
+      <section class="page restricted" id="page-people">
+        <div class="page-title">
+          <span class="eyebrow">ACESSOS</span>
+          <h2>Cadastrar Pessoas</h2>
+          <p>Área exclusiva do Admin Master para cadastro e permissões de administradores.</p>
+        </div>
+        <div class="panel">
+          <h3>Novo administrador</h3>
+          <form id="adminForm" class="grid-form">
+            <input type="hidden" id="adminEditName">
+            <label>Nome de login<input id="adminName" required placeholder="Ex: Novo Admin"></label>
+            <label>Senha<input id="adminPassword" type="password" required placeholder="Definir senha"></label>
+            <label>Perfil<select id="adminRole"><option value="operational">Admin Operacional</option><option value="visual">Admin com Permissão Visual</option></select></label>
+            <label>Status<select id="adminActive"><option value="true">Ativo</option><option value="false">Inativo</option></select></label>
+            <div class="form-actions wide">
+              <button class="btn primary" type="submit">Salvar administrador</button>
+              <button class="btn ghost" type="button" id="clearAdminForm">Limpar</button>
+            </div>
+          </form>
+        </div>
+        <div class="panel">
+          <h3>Administradores</h3>
+          <div class="table-wrap desktop-table-wrap">
+            <table class="data-table desktop-table" id="adminsTable"></table>
+          </div>
+          <div class="mobile-list" id="adminsMobileList"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="loginModal" aria-hidden="true">
+    <div class="modal">
+      <h2>Login de Administrador</h2>
+      <p>Insira seu nome de login e senha para acessar os controles da liga.</p>
+      <form id="loginForm">
+        <label>Nome / Login<input id="loginName" autocomplete="username" placeholder="Digite seu nome de administrador"></label>
+        <label>Senha
+          <span class="password-field">
+            <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Digite sua senha">
+            <button id="togglePassword" type="button" aria-label="Mostrar senha">👁️</button>
+          </span>
+        </label>
+        <div id="loginMessage" class="message" aria-live="polite"></div>
+        <div class="modal-actions">
+          <button class="btn primary" type="submit">Entrar</button>
+          <button class="btn secondary" type="button" id="cancelLogin">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="installModal" aria-hidden="true">
+    <div class="modal">
+      <h2>Instalar Liga Nibiru FC</h2>
+      <p id="installInstructions">Para instalar no iPhone: abra este site pelo Safari, toque em Compartilhar e depois em “Adicionar à Tela de Início”.</p>
+      <div class="modal-actions">
+        <button class="btn primary" type="button" id="closeInstallModal">Entendi</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
