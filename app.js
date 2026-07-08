@@ -180,6 +180,109 @@ function toSupabaseMatch(match){
   };
 }
 
+
+function fromSupabaseAdmin(row){
+  return {
+    id: row.id,
+    name: row.name || "",
+    password: row.password || "",
+    role: row.role || "operational",
+    active: row.active !== false,
+    fixed: row.fixed === true
+  };
+}
+
+function toSupabaseAdmin(admin){
+  return {
+    name: admin.name || "",
+    password: admin.password || "",
+    role: admin.role || "operational",
+    active: admin.active !== false,
+    fixed: admin.fixed === true
+  };
+}
+
+async function loadAdminsFromSupabase(){
+  if (!supabaseAvailable()) return false;
+  try {
+    const rows = await supabaseRequest("/admins?select=*&order=name.asc");
+    if (Array.isArray(rows) && rows.length) {
+      state.admins = rows.map(fromSupabaseAdmin);
+      writeJSON(LS.admins, state.admins);
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.warn("Falha ao carregar administradores online", error);
+    return false;
+  }
+}
+
+
+async function saveAdminOnline(admin, oldName){
+  const localAdmin = {...admin};
+
+  if (!supabaseAvailable()) {
+    saveAdmins();
+    return localAdmin;
+  }
+
+  try {
+    let saved;
+
+    if (localAdmin.id) {
+      const rows = await supabaseRequest(`/admins?id=eq.${encodeURIComponent(localAdmin.id)}&select=*`, {
+        method: "PATCH",
+        body: JSON.stringify(toSupabaseAdmin(localAdmin))
+      });
+      saved = Array.isArray(rows) ? rows[0] : rows;
+    } else if (oldName) {
+      const rows = await supabaseRequest(`/admins?name=eq.${encodeURIComponent(oldName)}&select=*`, {
+        method: "PATCH",
+        body: JSON.stringify(toSupabaseAdmin(localAdmin))
+      });
+      saved = Array.isArray(rows) ? rows[0] : rows;
+    } else {
+      const rows = await supabaseRequest("/admins?select=*", {
+        method: "POST",
+        body: JSON.stringify(toSupabaseAdmin(localAdmin))
+      });
+      saved = Array.isArray(rows) ? rows[0] : rows;
+    }
+
+    const normalized = saved ? fromSupabaseAdmin(saved) : localAdmin;
+    state.admins = state.admins.filter(a => norm(a.name) !== norm(oldName || localAdmin.name) && (!normalized.id || a.id !== normalized.id));
+    state.admins.push(normalized);
+    state.admins.sort((a,b)=>a.name.localeCompare(b.name));
+    saveAdmins();
+    return normalized;
+  } catch (error) {
+    console.warn("Falha ao salvar administrador online", error);
+    toast("NÃ£o consegui salvar o administrador na base online.");
+    throw error;
+  }
+}
+
+async function deleteAdminOnline(admin){
+  if (!admin) return;
+
+  if (!supabaseAvailable() || !admin.id) {
+    state.admins = state.admins.filter(a => norm(a.name) !== norm(admin.name));
+    saveAdmins();
+    return;
+  }
+
+  try {
+    await supabaseRequest(`/admins?id=eq.${encodeURIComponent(admin.id)}`, { method: "DELETE" });
+    state.admins = state.admins.filter(a => a.id !== admin.id);
+    saveAdmins();
+  } catch (error) {
+    console.warn("Falha ao remover administrador online", error);
+    toast("NÃ£o consegui remover o administrador na base online.");
+    throw error;
+  }
+}
+
 async function loadPlayersFromSupabase(){
   const rows = await supabaseRequest("players?select=*&order=created_at.asc");
   return Array.isArray(rows) ? rows.map(fromSupabasePlayer) : [];
@@ -191,6 +294,7 @@ async function loadMatchesFromSupabase(){
 }
 
 async function loadCloudData(){
+  await loadAdminsFromSupabase();
   if (!supabaseAvailable()) {
     state.cloudEnabled = false;
     return;
@@ -270,7 +374,8 @@ function baseAdmins(){
     {name:"Lukas", password:"Lukas123", role:"master", active:true, fixed:true},
     {name:"Pedro", password:"", role:"visual", active:true, fixed:true},
     {name:"Wanderson", password:"", role:"operational", active:true, fixed:true},
-    {name:"Enrico", password:"", role:"operational", active:true, fixed:true}
+    {name:"Enrico", password:"", role:"operational", active:true, fixed:true},
+    {name:"Henrique", password:"", role:"operational", active:true, fixed:true}
   ];
 }
 
@@ -840,8 +945,7 @@ function setupEvents(){
       const a = state.admins.find(x=>x.name===delA.dataset.deleteAdmin);
       if (a?.role === "master") return toast("Admin Master é protegido.");
       if (confirm("Remover administrador?")) {
-        state.admins = state.admins.filter(x=>x.name!==delA.dataset.deleteAdmin);
-        saveAdmins(); renderAll(); toast("Administrador removido.");
+        deleteAdminOnline(a).then(()=>{ renderAll(); toast("Administrador removido da base online."); });
       }
     }
   });
@@ -850,7 +954,11 @@ function setupEvents(){
   $("#accessBtn").addEventListener("click", logoutAdmin);
   $("#cancelLogin").addEventListener("click", closeLogin);
   $("#loginModal").addEventListener("click", e=>{ if(e.target.id==="loginModal") closeLogin(); });
-  $("#loginForm").addEventListener("submit", e=>{ e.preventDefault(); loginAdmin($("#loginName").value, $("#loginPassword").value); });
+  $("#loginForm").addEventListener("submit", async e=>{
+    e.preventDefault();
+    await loadAdminsFromSupabase();
+    loginAdmin($("#loginName").value, $("#loginPassword").value);
+  });
   $("#togglePassword").addEventListener("click", ()=>{
     const input = $("#loginPassword");
     input.type = input.type === "password" ? "text" : "password";
@@ -921,23 +1029,35 @@ function setupEvents(){
       toast("Erro ao salvar partida no banco online.");
     }
   });
-  $("#adminForm").addEventListener("submit", e=>{
+  $("#adminForm").addEventListener("submit", async e=>{
     e.preventDefault();
-    if (!requirePeople()) return;
+    if (!isMaster()) return toast("Apenas ADM Master pode alterar administradores.");
+
     const old = $("#adminEditName").value;
     const name = $("#adminName").value.trim();
     const password = $("#adminPassword").value.trim();
     const role = $("#adminRole").value;
     const active = $("#adminActive").value === "true";
+
     if (!name || !password) return toast("Informe nome e senha.");
-    if (["adm master","lukas"].includes(norm(name))) return toast("Admin Master é protegido.");
-    const obj = {name, password, role, active, fixed:false};
-    if (old) state.admins = state.admins.map(a=>a.name===old?obj:a);
-    else {
-      if (state.admins.some(a=>norm(a.name)===norm(name))) return toast("Administrador já existe.");
-      state.admins.push(obj);
+    if (["adm master","lukas"].includes(norm(name))) return toast("Admin Master Ã© protegido.");
+
+    const previous = state.admins.find(a => norm(a.name) === norm(old || name));
+    const obj = {id: previous?.id, name, password, role, active, fixed:false};
+
+    if (!old && state.admins.some(a=>norm(a.name)===norm(name))) {
+      return toast("Administrador jÃ¡ existe.");
     }
-    saveAdmins(); clearAdminForm(); renderAll(); toast("Administrador salvo.");
+
+    try {
+      await saveAdminOnline(obj, old);
+      await loadAdminsFromSupabase();
+      clearAdminForm();
+      renderAll();
+      toast("Administrador salvo na base online.");
+    } catch (error) {
+      console.error(error);
+    }
   });
   $("#clearAdminForm").addEventListener("click", clearAdminForm);
 
@@ -1011,5 +1131,6 @@ async function start(){
   navigate(state.page);
 }
 start();
+
 
 

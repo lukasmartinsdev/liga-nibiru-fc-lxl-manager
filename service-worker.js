@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = "nibiru-mobile-header-v10";
+﻿const CACHE_NAME = "nibiru-admins-online-v2";
 const ASSETS = [
   "./",
   "./index.html",
@@ -23,6 +23,7 @@ self.addEventListener("activate", event => {
 self.addEventListener("fetch", event => {
   event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request)));
 });
+
 
 
 
